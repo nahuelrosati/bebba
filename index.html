@@ -1,0 +1,1043 @@
+
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Per Beatrice ❤️</title>
+
+<style>
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: Georgia, serif;
+    min-height: 100vh;
+    overflow: hidden;
+    background: #170f1c;
+}
+
+/* SFONDO INIZIALE */
+
+.scene {
+    position: fixed;
+    inset: 0;
+    background:
+        radial-gradient(ellipse at 50% 80%, #633447 0%, transparent 55%),
+        linear-gradient(145deg, #1b1020, #351827 55%, #120d18);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.stars {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+}
+
+.star {
+    position: absolute;
+    width: 3px;
+    height: 3px;
+    background: #fff1d5;
+    border-radius: 50%;
+    box-shadow: 0 0 10px #fff;
+    animation: twinkle 2s infinite alternate;
+}
+
+@keyframes twinkle {
+    from { opacity: .2; transform: scale(.7); }
+    to { opacity: 1; transform: scale(1.4); }
+}
+
+/* BUSTA */
+
+.envelope {
+    position: relative;
+    width: 310px;
+    height: 205px;
+    perspective: 1200px;
+    cursor: pointer;
+    transform: translateY(45px);
+}
+
+.envelope-back {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(145deg, #c77a91, #8f435e);
+    border-radius: 5px;
+    box-shadow: 0 25px 70px #0008;
+    z-index: 1;
+}
+
+/* LETTERA */
+
+.paper {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    background: #fffaf5;
+    border-radius: 5px;
+    z-index: 2;
+
+    transform: translateY(0);
+    transform-style: preserve-3d;
+    -webkit-transform-style: preserve-3d;
+
+    transition: transform 1.5s ease;
+    pointer-events: none;
+}
+
+.paper.rising {
+    transform: translateY(-240px);
+}
+
+.paper.emerged {
+    z-index: 10;
+}
+
+.paper.centering {
+    transform: translateY(-5vh) scale(1.55);
+    transition: transform 1.8s ease;
+}
+
+.paper.flipped {
+    transform: translateY(-5vh) scale(1.55) rotateY(180deg);
+    transition: transform 1.2s ease;
+}
+
+.paper-face {
+    position: absolute;
+    inset: 0;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+    text-align: center;
+    padding: 15px;
+
+    background: #fffaf5;
+    border: 2px solid #e9c4c9;
+    border-radius: 5px;
+
+    backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
+
+    transform-style: preserve-3d;
+    -webkit-transform-style: preserve-3d;
+
+    box-shadow: 0 5px 30px #0003;
+}
+
+.paper-front {
+    transform: rotateY(0deg);
+}
+
+.paper-back {
+    transform: rotateY(180deg);
+}
+
+.paper-front h2 {
+    color: #a34d69;
+    font-size: 25px;
+    margin-bottom: 15px;
+}
+
+.paper-front p {
+    color: #a58b8b;
+    font-size: 14px;
+    margin: 4px;
+}
+
+.paper-back h2 {
+    color: #9e4561;
+    font-size: 18px;
+    line-height: 1.5;
+    margin-bottom: 20px;
+}
+
+/* FRONTE BUSTA */
+
+.envelope-front {
+    position: absolute;
+    inset: 0;
+    z-index: 3;
+    background: linear-gradient(145deg, #c87991, #a24d6c);
+    clip-path: polygon(
+        0 0,
+        50% 57%,
+        100% 0,
+        100% 100%,
+        0 100%
+    );
+    pointer-events: none;
+}
+
+.envelope-flap {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(145deg, #e5a4b5, #bd6985);
+    clip-path: polygon(0 0, 100% 0, 50% 58%);
+    transform-origin: top;
+    transition: transform .9s ease;
+    z-index: 5;
+    pointer-events: none;
+}
+
+.envelope.open .envelope-flap {
+    transform: rotateX(180deg);
+}
+
+.envelope.flap-opened .envelope-flap {
+    z-index: 1;
+}
+
+.heart-seal {
+    position: absolute;
+    top: 42%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 36px;
+    z-index: 6;
+    filter: drop-shadow(0 0 10px #ffcada);
+    transition: opacity .3s;
+    pointer-events: none;
+}
+
+.envelope.open .heart-seal {
+    opacity: 0;
+}
+
+/* PULSANTI */
+
+.choice-btn {
+    border: none;
+    border-radius: 30px;
+    padding: 11px 22px;
+    font-family: Georgia, serif;
+    font-size: 14px;
+    cursor: pointer;
+    white-space: nowrap;
+    touch-action: manipulation;
+}
+
+.yes-button {
+    background: linear-gradient(135deg, #c76b88, #8f3858);
+    color: white;
+    box-shadow: 0 5px 18px #a64d6c55;
+}
+
+.no-button {
+    background: #e7dada;
+    color: #684b55;
+    margin-left: 8px;
+}
+
+.no-button.runaway {
+    position: fixed !important;
+    z-index: 1000;
+    margin: 0 !important;
+    transition: none !important;
+    transform: none !important;
+    scale: 1 !important;
+    font-family: Georgia, serif !important;
+    font-weight: normal !important;
+    border-radius: 30px !important;
+    flex: none !important;
+    white-space: nowrap !important;
+    min-width: 0 !important;
+    min-height: 0 !important;
+}
+
+/* SCHERMATA FINALE */
+
+.success-overlay {
+    position: fixed;
+    inset: 0;
+    display: none;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    overflow: hidden;
+    z-index: 2000;
+    background:
+        radial-gradient(ellipse at 50% 100%, #472039 0%, transparent 60%),
+        linear-gradient(180deg, #080b19, #171326 60%, #241327);
+}
+
+.success-overlay.show {
+    display: flex;
+}
+
+#fireworks,
+#heartRain {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+}
+
+#fireworks {
+    z-index: 1;
+}
+
+#heartRain {
+    z-index: 2;
+}
+
+.love-message {
+    position: relative;
+    z-index: 3;
+    text-align: center;
+    padding: 20px;
+    max-width: 650px;
+    animation: cinematic 2s ease both;
+}
+
+.love-message .small-title {
+    font-size: 12px;
+    letter-spacing: 5px;
+    color: #f4c5d1;
+    margin-bottom: 25px;
+    text-transform: uppercase;
+}
+
+.love-message h1 {
+    color: #ffe6df;
+    font-size: clamp(28px, 7vw, 48px);
+    line-height: 1.35;
+    font-weight: normal;
+    text-shadow:
+        0 0 10px #ffc6d6,
+        0 0 35px #e67d9d88;
+}
+
+.love-message .divider {
+    width: 100px;
+    height: 1px;
+    background: linear-gradient(
+        90deg,
+        transparent,
+        #e9b6a5,
+        transparent
+    );
+    margin: 28px auto;
+}
+
+.love-message .declaration {
+    font-size: clamp(24px, 5vw, 36px);
+    color: #f5b7c8;
+    font-style: italic;
+    text-shadow: 0 0 20px #ff8ba9;
+    animation: heartbeat 2s infinite;
+}
+
+.love-message .final-hearts {
+    margin-top: 28px;
+    font-size: 30px;
+    letter-spacing: 8px;
+}
+
+@keyframes cinematic {
+    from {
+        opacity: 0;
+        transform: translateY(35px) scale(.8);
+        filter: blur(10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+        filter: blur(0);
+    }
+}
+
+@keyframes heartbeat {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.08); }
+}
+
+@media(max-width: 400px) {
+    .envelope {
+        width: 280px;
+        height: 185px;
+    }
+
+    .paper.centering {
+        transform: translateY(-5vh) scale(1.2);
+    }
+
+    .paper.flipped {
+        transform: translateY(-5vh) scale(1.2) rotateY(180deg);
+    }
+}
+
+@media(prefers-reduced-motion: reduce) {
+    .love-message,
+    .love-message .declaration {
+        animation-duration: .01ms;
+        animation-iteration-count: 1;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<div class="scene">
+
+    <div class="stars" id="stars"></div>
+
+    <div class="envelope" id="envelope">
+
+        <div class="envelope-back"></div>
+
+        <div class="paper" id="paper">
+
+            <div class="paper-face paper-front">
+                <h2>Per Beatrice 💗</h2>
+                <p>Una piccola sorpresa...</p>
+                <p>Con amore, Nahuel</p>
+                <p style="margin-top:15px">Gira la lettera ♥</p>
+            </div>
+
+            <div class="paper-face paper-back">
+                <h2>VUOI ESSERE LA MIA FIDANZATA? ❤️</h2>
+
+                <div>
+                    <button class="choice-btn yes-button" id="yesButton">
+                        SÌ ❤️
+                    </button>
+
+                    <button class="choice-btn no-button" id="noButton">
+                        NO
+                    </button>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="envelope-front"></div>
+        <div class="envelope-flap" id="flap"></div>
+        <div class="heart-seal">❤️</div>
+
+    </div>
+</div>
+
+<!-- FINALE -->
+
+<div class="success-overlay" id="successOverlay">
+
+    <canvas id="fireworks"></canvas>
+    <canvas id="heartRain"></canvas>
+
+    <div class="love-message">
+
+        <div class="small-title">
+            PER SEMPRE NOI DUE ❤️
+        </div>
+
+        <h1>
+            OGGI MI HAI RESO<br>
+            L'UOMO PIÙ FELICE<br>
+            DEL MONDO!
+        </h1>
+
+        <div class="divider"></div>
+
+        <div class="declaration">
+            Ti amo, amore mio 💗
+        </div>
+
+        <div class="final-hearts">
+            ♡ 💕 ♡
+        </div>
+
+    </div>
+
+</div>
+
+<script>
+
+/* STELLE */
+
+const stars = document.getElementById("stars");
+
+for (let i = 0; i < 100; i++) {
+
+    const star = document.createElement("div");
+
+    star.className = "star";
+    star.style.left = Math.random() * 100 + "%";
+    star.style.top = Math.random() * 100 + "%";
+    star.style.animationDelay = Math.random() * 3 + "s";
+    star.style.opacity = Math.random();
+
+    stars.appendChild(star);
+}
+
+/* ELEMENTI */
+
+const envelope = document.getElementById("envelope");
+const paper = document.getElementById("paper");
+const flap = document.getElementById("flap");
+const noButton = document.getElementById("noButton");
+const yesButton = document.getElementById("yesButton");
+const successOverlay = document.getElementById("successOverlay");
+
+let started = false;
+let phase = 0;
+let flipped = false;
+let noIsFree = false;
+
+/* APERTURA BUSTA */
+
+envelope.addEventListener("click", () => {
+
+    if (started) return;
+
+    started = true;
+    envelope.classList.add("open");
+});
+
+/* ANIMAZIONE LEMBO */
+
+flap.addEventListener("transitionend", (event) => {
+
+    if (
+        event.target !== flap ||
+        event.propertyName !== "transform"
+    ) return;
+
+    envelope.classList.add("flap-opened");
+
+    setTimeout(() => {
+
+        paper.classList.add("rising");
+        phase = 1;
+
+    }, 300);
+});
+
+/* MOVIMENTO LETTERA */
+
+paper.addEventListener("transitionend", (event) => {
+
+    if (
+        event.target !== paper ||
+        event.propertyName !== "transform"
+    ) return;
+
+    if (phase === 1) {
+
+        phase = 2;
+        paper.classList.add("emerged");
+
+        setTimeout(() => {
+
+            if (phase !== 2) return;
+
+            paper.classList.add("centering");
+            phase = 3;
+
+        }, 400);
+
+    } else if (phase === 3) {
+
+        phase = 4;
+        paper.style.pointerEvents = "auto";
+        paper.style.cursor = "pointer";
+
+    } else if (phase === 5) {
+
+        phase = 6;
+
+        const rect = noButton.getBoundingClientRect();
+
+        document.body.appendChild(noButton);
+
+        noButton.classList.add("runaway");
+
+        noButton.style.width = rect.width + "px";
+        noButton.style.height = rect.height + "px";
+        noButton.style.left = rect.left + "px";
+        noButton.style.top = rect.top + "px";
+
+        noIsFree = true;
+    }
+});
+
+/* GIRARE LETTERA */
+
+paper.addEventListener("click", (event) => {
+
+    if (event.target.closest("button")) return;
+    if (phase !== 4 || flipped) return;
+
+    flipped = true;
+    phase = 5;
+
+    paper.classList.add("flipped");
+});
+
+/* NO CHE SCAPPA */
+
+function teleportNo() {
+
+    if (!noIsFree) return;
+
+    const rect = noButton.getBoundingClientRect();
+    const margin = 15;
+
+    const maxX = Math.max(
+        margin,
+        window.innerWidth - rect.width - margin
+    );
+
+    const maxY = Math.max(
+        margin,
+        window.innerHeight - rect.height - margin
+    );
+
+    noButton.style.left =
+        margin + Math.random() * (maxX - margin) + "px";
+
+    noButton.style.top =
+        margin + Math.random() * (maxY - margin) + "px";
+}
+
+noButton.addEventListener("pointerdown", (event) => {
+
+    if (!noIsFree) return;
+
+    event.preventDefault();
+    teleportNo();
+});
+
+noButton.addEventListener("click", (event) => {
+
+    event.preventDefault();
+    event.stopPropagation();
+    teleportNo();
+});
+
+window.addEventListener("resize", () => {
+
+    if (noIsFree) teleportNo();
+});
+
+/* RISPOSTA SI */
+
+yesButton.addEventListener("click", (event) => {
+
+    event.preventDefault();
+    event.stopPropagation();
+
+    successOverlay.classList.add("show");
+
+    startFireworks();
+    startHeartRain();
+});
+
+/* ==================================
+   FUOCHI D'ARTIFICIO OTTIMIZZATI
+================================== */
+
+function startFireworks() {
+
+    const canvas = document.getElementById("fireworks");
+
+    const ctx = canvas.getContext("2d", {
+        alpha: true
+    });
+
+    let width, height;
+
+    let rockets = [];
+    let particles = [];
+
+    let lastLaunch = 0;
+    let lastFrame = 0;
+
+    const MAX_PARTICLES = 450;
+    const FRAME_INTERVAL = 1000 / 30;
+
+    const colors = [
+        "#ff3d81",
+        "#ffd166",
+        "#ffffff",
+        "#7ee8fa",
+        "#c77dff",
+        "#ff8c42",
+        "#ffb3c6"
+    ];
+
+    function resize() {
+
+        const dpr = Math.min(
+            window.devicePixelRatio || 1,
+            1.25
+        );
+
+        width = window.innerWidth;
+        height = window.innerHeight;
+
+        canvas.width = Math.round(width * dpr);
+        canvas.height = Math.round(height * dpr);
+
+        ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    }
+
+    resize();
+
+    window.addEventListener("resize", resize);
+
+    /* RAZZI */
+
+    class Rocket {
+
+        constructor() {
+
+            this.x = width * (0.12 + Math.random() * 0.76);
+            this.y = height + 10;
+
+            this.targetY = height * (
+                0.12 + Math.random() * 0.4
+            );
+
+            this.speed = 8 + Math.random() * 2;
+
+            this.color = colors[
+                Math.floor(Math.random() * colors.length)
+            ];
+
+            this.previousY = this.y;
+        }
+
+        update() {
+
+            this.previousY = this.y;
+            this.y -= this.speed;
+
+            return this.y > this.targetY;
+        }
+
+        draw() {
+
+            ctx.strokeStyle = this.color;
+            ctx.lineWidth = 2;
+
+            ctx.shadowBlur = 10;
+            ctx.shadowColor = this.color;
+
+            ctx.beginPath();
+            ctx.moveTo(this.x, this.previousY);
+            ctx.lineTo(this.x, this.y);
+            ctx.stroke();
+
+            ctx.shadowBlur = 0;
+        }
+    }
+
+    /* PARTICELLE */
+
+    class Particle {
+
+        constructor(x, y, color, angle, speed) {
+
+            this.x = x;
+            this.y = y;
+
+            this.vx = Math.cos(angle) * speed;
+            this.vy = Math.sin(angle) * speed;
+
+            this.color = color;
+
+            this.life = 1;
+            this.decay = 0.012 + Math.random() * 0.018;
+
+            this.gravity = 0.055;
+            this.friction = 0.985;
+
+            this.size = Math.random() * 1.8 + 0.8;
+
+            this.glitter = Math.random() > 0.5;
+            this.twinkle = Math.random() * 10;
+
+            this.previousX = x;
+            this.previousY = y;
+        }
+
+        update() {
+
+            this.previousX = this.x;
+            this.previousY = this.y;
+
+            this.vx *= this.friction;
+            this.vy *= this.friction;
+
+            this.vy += this.gravity;
+
+            this.x += this.vx;
+            this.y += this.vy;
+
+            this.life -= this.decay;
+            this.twinkle += 0.2;
+
+            return this.life > 0;
+        }
+
+        draw() {
+
+            const flicker = this.glitter
+                ? 0.4 + Math.abs(Math.sin(this.twinkle)) * 0.6
+                : 1;
+
+            ctx.globalAlpha = Math.max(0, this.life) * flicker;
+
+            ctx.strokeStyle = this.color;
+            ctx.lineWidth = this.size;
+
+            ctx.beginPath();
+            ctx.moveTo(this.previousX, this.previousY);
+            ctx.lineTo(this.x, this.y);
+            ctx.stroke();
+
+            if (this.glitter) {
+
+                ctx.fillStyle = "#ffffff";
+
+                ctx.beginPath();
+                ctx.arc(
+                    this.x,
+                    this.y,
+                    this.size * 0.65,
+                    0,
+                    Math.PI * 2
+                );
+                ctx.fill();
+            }
+        }
+    }
+
+    /* ESPLOSIONE */
+
+    function explode(x, y, color) {
+
+        const count = 65 + Math.floor(Math.random() * 30);
+
+        const available = MAX_PARTICLES - particles.length;
+
+        const actualCount = Math.min(count, available);
+
+        for (let i = 0; i < actualCount; i++) {
+
+            const angle =
+                Math.PI * 2 * i / actualCount +
+                (Math.random() - 0.5) * 0.1;
+
+            const speed = 1.5 + Math.random() * 4.5;
+
+            const particleColor = Math.random() > 0.75
+                ? colors[Math.floor(Math.random() * colors.length)]
+                : color;
+
+            particles.push(
+                new Particle(
+                    x,
+                    y,
+                    particleColor,
+                    angle,
+                    speed
+                )
+            );
+        }
+    }
+
+    /* ANIMAZIONE */
+
+    function animate(time) {
+
+        requestAnimationFrame(animate);
+
+        if (time - lastFrame < FRAME_INTERVAL) return;
+
+        lastFrame = time;
+
+        /* Dissolvenza delle scie */
+
+        ctx.globalCompositeOperation = "destination-out";
+        ctx.fillStyle = "rgba(0,0,0,0.22)";
+        ctx.fillRect(0, 0, width, height);
+
+        ctx.globalCompositeOperation = "lighter";
+
+        /* Lancio dei razzi */
+
+        if (time - lastLaunch > 850 + Math.random() * 650) {
+
+            rockets.push(new Rocket());
+
+            if (Math.random() > 0.8) {
+                rockets.push(new Rocket());
+            }
+
+            lastLaunch = time;
+        }
+
+        /* Aggiornamento razzi */
+
+        const activeRockets = [];
+
+        for (const rocket of rockets) {
+
+            if (rocket.update()) {
+
+                rocket.draw();
+                activeRockets.push(rocket);
+
+            } else {
+
+                explode(
+                    rocket.x,
+                    rocket.y,
+                    rocket.color
+                );
+            }
+        }
+
+        rockets = activeRockets;
+
+        /* Aggiornamento particelle */
+
+        const activeParticles = [];
+
+        for (const particle of particles) {
+
+            if (particle.update()) {
+
+                particle.draw();
+                activeParticles.push(particle);
+            }
+        }
+
+        particles = activeParticles;
+
+        ctx.globalCompositeOperation = "source-over";
+        ctx.globalAlpha = 1;
+    }
+
+    requestAnimationFrame(animate);
+}
+
+/* ==================================
+   PIOGGIA DI CUORICINI OTTIMIZZATA
+================================== */
+
+function startHeartRain() {
+
+    const canvas = document.getElementById("heartRain");
+    const ctx = canvas.getContext("2d");
+
+    let width, height;
+    let hearts = [];
+
+    function resize() {
+
+        const dpr = Math.min(
+            window.devicePixelRatio || 1,
+            1.25
+        );
+
+        width = window.innerWidth;
+        height = window.innerHeight;
+
+        canvas.width = Math.round(width * dpr);
+        canvas.height = Math.round(height * dpr);
+
+        ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    }
+
+    resize();
+
+    window.addEventListener("resize", resize);
+
+    const symbols = ["💗", "💕", "💖", "♥", "💘", "✨"];
+
+    function createHeart() {
+
+        if (hearts.length >= 45) return;
+
+        hearts.push({
+
+            x: Math.random() * width,
+            y: -30,
+
+            size: 12 + Math.random() * 18,
+
+            speed: 0.8 + Math.random() * 1.5,
+
+            drift: Math.random() * 1.5 - 0.75,
+
+            rotation: Math.random() * 0.5 - 0.25,
+
+            symbol: symbols[
+                Math.floor(Math.random() * symbols.length)
+            ],
+
+            opacity: 0.5 + Math.random() * 0.5
+        });
+    }
+
+    function animate() {
+
+        ctx.clearRect(0, 0, width, height);
+
+        if (Math.random() < 0.12) {
+            createHeart();
+        }
+
+        const activeHearts = [];
+
+        for (const h of hearts) {
+
+            h.y += h.speed;
+            h.x += Math.sin(h.y / 35) * 0.7 + h.drift * 0.3;
+
+            ctx.save();
+
+            ctx.translate(h.x, h.y);
+            ctx.rotate(h.rotation);
+
+            ctx.globalAlpha = h.opacity;
+            ctx.font = `${h.size}px serif`;
+
+            ctx.fillText(h.symbol, 0, 0);
+
+            ctx.restore();
+
+            if (h.y < height + 50) {
+                activeHearts.push(h);
+            }
+        }
+
+        hearts = activeHearts;
+
+        requestAnimationFrame(animate);
+    }
+
+    animate();
+}
+
+</script>
+
+</body>
+</html>
