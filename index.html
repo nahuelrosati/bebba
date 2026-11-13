@@ -3,7 +3,8 @@
 <html lang="it">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="theme-color" content="#170f1c">
 <title>Per Beatrice ❤️</title>
 
 <style>
@@ -13,14 +14,22 @@
     padding: 0;
 }
 
+html, body {
+    width: 100%;
+    min-height: 100%;
+}
+
 body {
     font-family: Georgia, serif;
     min-height: 100vh;
+    min-height: 100dvh;
     overflow: hidden;
     background: #170f1c;
+    -webkit-tap-highlight-color: transparent;
+    touch-action: manipulation;
 }
 
-/* SFONDO INIZIALE */
+/* SFONDO */
 
 .scene {
     position: fixed;
@@ -31,6 +40,7 @@ body {
     display: flex;
     align-items: center;
     justify-content: center;
+    overflow: hidden;
 }
 
 .stars {
@@ -58,11 +68,12 @@ body {
 
 .envelope {
     position: relative;
-    width: 310px;
-    height: 205px;
+    width: min(310px, 82vw);
+    aspect-ratio: 310 / 205;
     perspective: 1200px;
     cursor: pointer;
-    transform: translateY(45px);
+    transform: translateY(35px);
+    flex-shrink: 0;
 }
 
 .envelope-back {
@@ -84,11 +95,9 @@ body {
     background: #fffaf5;
     border-radius: 5px;
     z-index: 2;
-
     transform: translateY(0);
     transform-style: preserve-3d;
     -webkit-transform-style: preserve-3d;
-
     transition: transform 1.5s ease;
     pointer-events: none;
 }
@@ -114,25 +123,19 @@ body {
 .paper-face {
     position: absolute;
     inset: 0;
-
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
-
     text-align: center;
     padding: 15px;
-
     background: #fffaf5;
     border: 2px solid #e9c4c9;
     border-radius: 5px;
-
     backface-visibility: hidden;
     -webkit-backface-visibility: hidden;
-
     transform-style: preserve-3d;
     -webkit-transform-style: preserve-3d;
-
     box-shadow: 0 5px 30px #0003;
 }
 
@@ -169,7 +172,6 @@ body {
     position: absolute;
     inset: 0;
     z-index: 11;
-
     background: linear-gradient(145deg, #c87991, #a24d6c);
     clip-path: polygon(
         0 0,
@@ -227,6 +229,7 @@ body {
     cursor: pointer;
     white-space: nowrap;
     touch-action: manipulation;
+    min-height: 44px;
 }
 
 .yes-button {
@@ -241,23 +244,19 @@ body {
     margin-left: 8px;
 }
 
-/* NO CHE SCAPPA: STESSO PULSANTE */
+/* NO CHE SCAPPA */
 
 .no-button.runaway {
     position: fixed !important;
     z-index: 1000 !important;
-
     margin: 0 !important;
     transition: none !important;
     transform: none !important;
     scale: 1 !important;
-
     flex: none !important;
     white-space: nowrap !important;
-
     min-width: 0 !important;
-    min-height: 0 !important;
-
+    min-height: 44px !important;
     box-sizing: border-box !important;
 }
 
@@ -303,6 +302,7 @@ body {
     z-index: 3;
     text-align: center;
     padding: 20px;
+    width: 100%;
     max-width: 650px;
     animation: cinematic 2s ease both;
 }
@@ -357,7 +357,6 @@ body {
         transform: translateY(35px) scale(.8);
         filter: blur(10px);
     }
-
     to {
         opacity: 1;
         transform: translateY(0) scale(1);
@@ -370,22 +369,171 @@ body {
     50% { transform: scale(1.08); }
 }
 
-@media(max-width: 400px) {
-    .envelope {
-        width: 280px;
-        height: 185px;
-    }
+/* TABLET */
 
+@media (max-width: 900px) {
     .paper.centering {
-        transform: translateY(-5vh) scale(1.2);
+        transform: translateY(-5vh) scale(1.3);
     }
 
     .paper.flipped {
-        transform: translateY(-5vh) scale(1.2) rotateY(180deg);
+        transform: translateY(-5vh) scale(1.3) rotateY(180deg);
     }
 }
 
-@media(prefers-reduced-motion: reduce) {
+/* SMARTPHONE */
+
+@media (max-width: 600px) {
+
+    .scene {
+        padding: 15px;
+    }
+
+    .envelope {
+        width: min(82vw, 310px);
+        transform: translateY(20px);
+    }
+
+    .paper.rising {
+        transform: translateY(-32vh);
+    }
+
+    .paper.centering {
+        transform: translateY(-5vh) scale(1.15);
+    }
+
+    .paper.flipped {
+        transform: translateY(-5vh) scale(1.15) rotateY(180deg);
+    }
+
+    .paper-face {
+        padding: 10px;
+    }
+
+    .paper-front h2 {
+        font-size: clamp(17px, 5vw, 25px);
+        margin-bottom: 8px;
+    }
+
+    .paper-front p {
+        font-size: clamp(11px, 3.2vw, 14px);
+        margin: 3px;
+    }
+
+    .paper-back h2 {
+        font-size: clamp(14px, 4.2vw, 19px);
+        line-height: 1.35;
+        margin-bottom: 12px;
+    }
+
+    .choice-btn {
+        padding: 10px 15px;
+        font-size: 13px;
+        min-height: 44px;
+    }
+
+    .no-button {
+        margin-left: 4px;
+    }
+
+    .heart-seal {
+        font-size: 30px;
+    }
+
+    .love-message {
+        padding: 20px 14px;
+    }
+
+    .love-message h1 {
+        font-size: clamp(25px, 7vw, 40px);
+        line-height: 1.4;
+    }
+
+    .love-message .declaration {
+        font-size: clamp(22px, 6vw, 32px);
+    }
+
+    .love-message .divider {
+        margin: 22px auto;
+    }
+
+    .love-message .final-hearts {
+        margin-top: 22px;
+        font-size: 27px;
+    }
+}
+
+/* TELEFONI PICCOLI */
+
+@media (max-width: 360px) {
+
+    .envelope {
+        width: 78vw;
+    }
+
+    .paper.centering {
+        transform: translateY(-4vh) scale(1.05);
+    }
+
+    .paper.flipped {
+        transform: translateY(-4vh) scale(1.05) rotateY(180deg);
+    }
+
+    .paper-back h2 {
+        font-size: 13px;
+    }
+
+    .choice-btn {
+        padding: 9px 12px;
+        font-size: 12px;
+    }
+
+    .love-message h1 {
+        font-size: 25px;
+    }
+}
+
+/* SCHERMI BASSI */
+
+@media (max-height: 650px) {
+
+    .envelope {
+        width: min(270px, 75vw);
+        transform: translateY(10px);
+    }
+
+    .paper.rising {
+        transform: translateY(-28vh);
+    }
+
+    .paper.centering {
+        transform: translateY(-3vh) scale(1.15);
+    }
+
+    .paper.flipped {
+        transform: translateY(-3vh) scale(1.15) rotateY(180deg);
+    }
+
+    .love-message {
+        padding: 12px;
+    }
+
+    .love-message h1 {
+        font-size: clamp(24px, 6vw, 38px);
+    }
+
+    .love-message .divider {
+        margin: 16px auto;
+    }
+
+    .love-message .final-hearts {
+        margin-top: 14px;
+    }
+}
+
+/* RIDUZIONE ANIMAZIONI */
+
+@media (prefers-reduced-motion: reduce) {
     .love-message,
     .love-message .declaration {
         animation-duration: .01ms;
@@ -415,9 +563,11 @@ body {
             </div>
 
             <div class="paper-face paper-back">
+
                 <h2>VUOI ESSERE LA MIA FIDANZATA? ❤️</h2>
 
                 <div id="buttonContainer">
+
                     <button class="choice-btn yes-button" id="yesButton">
                         SÌ ❤️
                     </button>
@@ -425,6 +575,7 @@ body {
                     <button class="choice-btn no-button" id="noButton">
                         NO
                     </button>
+
                 </div>
 
             </div>
@@ -436,6 +587,7 @@ body {
         <div class="heart-seal">❤️</div>
 
     </div>
+
 </div>
 
 <!-- FINALE -->
@@ -559,74 +711,64 @@ paper.addEventListener("transitionend", (event) => {
         paper.style.pointerEvents = "auto";
         paper.style.cursor = "pointer";
 
+    } else if (phase === 5) {
+
+        phase = 6;
+
+        const rect = noButton.getBoundingClientRect();
+        const computed = getComputedStyle(noButton);
+
+        const placeholder = document.createElement("span");
+
+        placeholder.style.display = "inline-block";
+        placeholder.style.width = rect.width + "px";
+        placeholder.style.height = rect.height + "px";
+        placeholder.style.marginLeft = computed.marginLeft;
+        placeholder.style.verticalAlign = "middle";
+        placeholder.style.visibility = "hidden";
+
+        noButton.parentNode.insertBefore(placeholder, noButton);
+
+        const properties = [
+            "background",
+            "background-color",
+            "color",
+            "border",
+            "border-radius",
+            "padding",
+            "font-family",
+            "font-size",
+            "font-weight",
+            "line-height",
+            "letter-spacing",
+            "text-align",
+            "box-shadow",
+            "appearance",
+            "-webkit-appearance"
+        ];
+
+        properties.forEach(property => {
+            noButton.style.setProperty(
+                property,
+                computed.getPropertyValue(property),
+                "important"
+            );
+        });
+
+        document.body.appendChild(noButton);
+
+        noButton.classList.add("runaway");
+
+        noButton.style.width = rect.width + "px";
+        noButton.style.height = rect.height + "px";
+        noButton.style.left = rect.left + "px";
+        noButton.style.top = rect.top + "px";
+        noButton.style.transform = "none";
+
+        noIsFree = true;
+
     }
-else if (phase === 5) {
 
-    phase = 6;
-
-    // Dimensioni visive REALI dopo la rotazione
-    const rect = noButton.getBoundingClientRect();
-
-    // Salva lo stile visivo attuale
-    const computed = getComputedStyle(noButton);
-
-    // Placeholder invisibile
-    const placeholder = document.createElement("span");
-
-    placeholder.style.display = "inline-block";
-    placeholder.style.width = rect.width + "px";
-    placeholder.style.height = rect.height + "px";
-    placeholder.style.marginLeft = computed.marginLeft;
-    placeholder.style.verticalAlign = "middle";
-    placeholder.style.visibility = "hidden";
-
-    noButton.parentNode.insertBefore(placeholder, noButton);
-
-    // Salva lo stile originale del pulsante
-    const properties = [
-        "background",
-        "background-color",
-        "color",
-        "border",
-        "border-radius",
-        "padding",
-        "font-family",
-        "font-size",
-        "font-weight",
-        "line-height",
-        "letter-spacing",
-        "text-align",
-        "box-shadow",
-        "appearance",
-        "-webkit-appearance"
-    ];
-
-    properties.forEach(property => {
-        noButton.style.setProperty(
-            property,
-            computed.getPropertyValue(property),
-            "important"
-        );
-    });
-
-    // Stesso pulsante, senza ricrearlo
-    document.body.appendChild(noButton);
-
-    noButton.classList.add("runaway");
-
-    // Mantiene ESATTAMENTE le dimensioni visibili
-    noButton.style.width = rect.width + "px";
-    noButton.style.height = rect.height + "px";
-
-    // Mantiene la posizione
-    noButton.style.left = rect.left + "px";
-    noButton.style.top = rect.top + "px";
-
-    // Annulla la scala ereditata dalla lettera
-    noButton.style.transform = "none";
-
-    noIsFree = true;
-}
 });
 
 /* GIRARE LETTERA */
@@ -649,7 +791,8 @@ function teleportNo(event) {
     if (!noIsFree) return;
 
     const rect = noButton.getBoundingClientRect();
-    const margin = 20;
+
+    const margin = 15;
 
     const maxX = Math.max(
         margin,
@@ -661,14 +804,11 @@ function teleportNo(event) {
         window.innerHeight - rect.height - margin
     );
 
-    /* POSIZIONE DEL SÌ */
     const yesRect = yesButton.getBoundingClientRect();
 
-    /* POSIZIONE DEL MOUSE */
     const mouseX = event ? event.clientX : -1000;
     const mouseY = event ? event.clientY : -1000;
 
-    /* POSIZIONI ORDINATE: BORDI E CENTRO */
     const xPositions = [
         margin,
         maxX / 2,
@@ -684,6 +824,7 @@ function teleportNo(event) {
     const candidates = [];
 
     for (const x of xPositions) {
+
         for (const y of yPositions) {
 
             const overlapsYes =
@@ -701,12 +842,13 @@ function teleportNo(event) {
             if (!overlapsYes && !tooCloseToMouse) {
                 candidates.push({ x, y });
             }
+
         }
+
     }
 
     if (candidates.length === 0) return;
 
-    /* SCEGLIE UNA POSIZIONE DISPONIBILE */
     const destination =
         candidates[Math.floor(Math.random() * candidates.length)];
 
@@ -714,15 +856,17 @@ function teleportNo(event) {
     noButton.style.top = destination.y + "px";
 }
 
-/* SCAPPA QUANDO IL MOUSE ENTRA */
+/* SCAPPA CON IL MOUSE */
 
 noButton.addEventListener("pointerenter", event => {
+
     if (event.pointerType === "mouse") {
         teleportNo(event);
     }
+
 });
 
-/* SCAPPA ANCHE AL TOCCO */
+/* SCAPPA CON IL TOUCH */
 
 noButton.addEventListener("pointerdown", event => {
 
@@ -737,11 +881,13 @@ noButton.addEventListener("pointerdown", event => {
 /* IMPEDISCE IL CLICK */
 
 noButton.addEventListener("click", event => {
+
     event.preventDefault();
     event.stopPropagation();
+
 });
 
-/* RIDIMENSIONAMENTO DELLO SCHERMO */
+/* RIDIMENSIONAMENTO SCHERMO */
 
 window.addEventListener("resize", () => {
 
@@ -761,6 +907,7 @@ window.addEventListener("resize", () => {
 
     noButton.style.left = Math.max(15, x) + "px";
     noButton.style.top = Math.max(15, y) + "px";
+
 });
 
 /* RISPOSTA SI */
@@ -774,11 +921,10 @@ yesButton.addEventListener("click", (event) => {
 
     startFireworks();
     startHeartRain();
+
 });
 
-/* ==================================
-   FUOCHI D'ARTIFICIO OTTIMIZZATI
-================================== */
+/* FUOCHI D'ARTIFICIO */
 
 function startFireworks() {
 
@@ -823,13 +969,12 @@ function startFireworks() {
         canvas.height = Math.round(height * dpr);
 
         ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+
     }
 
     resize();
 
     window.addEventListener("resize", resize);
-
-    /* RAZZI */
 
     class Rocket {
 
@@ -849,6 +994,7 @@ function startFireworks() {
             ];
 
             this.previousY = this.y;
+
         }
 
         update() {
@@ -857,6 +1003,7 @@ function startFireworks() {
             this.y -= this.speed;
 
             return this.y > this.targetY;
+
         }
 
         draw() {
@@ -873,10 +1020,10 @@ function startFireworks() {
             ctx.stroke();
 
             ctx.shadowBlur = 0;
-        }
-    }
 
-    /* PARTICELLE */
+        }
+
+    }
 
     class Particle {
 
@@ -903,6 +1050,7 @@ function startFireworks() {
 
             this.previousX = x;
             this.previousY = y;
+
         }
 
         update() {
@@ -922,6 +1070,7 @@ function startFireworks() {
             this.twinkle += 0.2;
 
             return this.life > 0;
+
         }
 
         draw() {
@@ -952,12 +1101,14 @@ function startFireworks() {
                     0,
                     Math.PI * 2
                 );
-                ctx.fill();
-            }
-        }
-    }
 
-    /* ESPLOSIONE */
+                ctx.fill();
+
+            }
+
+        }
+
+    }
 
     function explode(x, y, color) {
 
@@ -988,10 +1139,10 @@ function startFireworks() {
                     speed
                 )
             );
-        }
-    }
 
-    /* ANIMAZIONE */
+        }
+
+    }
 
     function animate(time) {
 
@@ -1001,15 +1152,11 @@ function startFireworks() {
 
         lastFrame = time;
 
-        /* Dissolvenza delle scie */
-
         ctx.globalCompositeOperation = "destination-out";
         ctx.fillStyle = "rgba(0,0,0,0.22)";
         ctx.fillRect(0, 0, width, height);
 
         ctx.globalCompositeOperation = "lighter";
-
-        /* Lancio dei razzi */
 
         if (time - lastLaunch > 850 + Math.random() * 650) {
 
@@ -1020,9 +1167,8 @@ function startFireworks() {
             }
 
             lastLaunch = time;
-        }
 
-        /* Aggiornamento razzi */
+        }
 
         const activeRockets = [];
 
@@ -1040,12 +1186,12 @@ function startFireworks() {
                     rocket.y,
                     rocket.color
                 );
+
             }
+
         }
 
         rockets = activeRockets;
-
-        /* Aggiornamento particelle */
 
         const activeParticles = [];
 
@@ -1055,21 +1201,23 @@ function startFireworks() {
 
                 particle.draw();
                 activeParticles.push(particle);
+
             }
+
         }
 
         particles = activeParticles;
 
         ctx.globalCompositeOperation = "source-over";
         ctx.globalAlpha = 1;
+
     }
 
     requestAnimationFrame(animate);
+
 }
 
-/* ==================================
-   PIOGGIA DI CUORICINI OTTIMIZZATA
-================================== */
+/* PIOGGIA DI CUORICINI */
 
 function startHeartRain() {
 
@@ -1093,13 +1241,14 @@ function startHeartRain() {
         canvas.height = Math.round(height * dpr);
 
         ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+
     }
 
     resize();
 
     window.addEventListener("resize", resize);
 
-    const symbols = ["💗", "💕", "💖", "♥", "💘", "✨"];
+    const symbols = ["💗", "💕", "💖", "💘", "✨"];
 
     function createHeart() {
 
@@ -1123,7 +1272,9 @@ function startHeartRain() {
             ],
 
             opacity: 0.5 + Math.random() * 0.5
+
         });
+
     }
 
     function animate() {
@@ -1156,14 +1307,17 @@ function startHeartRain() {
             if (h.y < height + 50) {
                 activeHearts.push(h);
             }
+
         }
 
         hearts = activeHearts;
 
         requestAnimationFrame(animate);
+
     }
 
     animate();
+
 }
 
 </script>
