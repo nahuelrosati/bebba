@@ -98,7 +98,7 @@ body {
 }
 
 .paper.emerged {
-    z-index: 10;
+    z-index: 20;
 }
 
 .paper.centering {
@@ -168,7 +168,8 @@ body {
 .envelope-front {
     position: absolute;
     inset: 0;
-    z-index: 3;
+    z-index: 11;
+
     background: linear-gradient(145deg, #c87991, #a24d6c);
     clip-path: polygon(
         0 0,
@@ -240,20 +241,24 @@ body {
     margin-left: 8px;
 }
 
+/* NO CHE SCAPPA: STESSO PULSANTE */
+
 .no-button.runaway {
     position: fixed !important;
-    z-index: 1000;
+    z-index: 1000 !important;
+
     margin: 0 !important;
     transition: none !important;
     transform: none !important;
     scale: 1 !important;
-    font-family: Georgia, serif !important;
-    font-weight: normal !important;
-    border-radius: 30px !important;
+
     flex: none !important;
     white-space: nowrap !important;
+
     min-width: 0 !important;
     min-height: 0 !important;
+
+    box-sizing: border-box !important;
 }
 
 /* SCHERMATA FINALE */
@@ -412,7 +417,7 @@ body {
             <div class="paper-face paper-back">
                 <h2>VUOI ESSERE LA MIA FIDANZATA? ❤️</h2>
 
-                <div>
+                <div id="buttonContainer">
                     <button class="choice-btn yes-button" id="yesButton">
                         SÌ ❤️
                     </button>
@@ -421,6 +426,7 @@ body {
                         NO
                     </button>
                 </div>
+
             </div>
 
         </div>
@@ -441,10 +447,6 @@ body {
 
     <div class="love-message">
 
-        <div class="small-title">
-            PER SEMPRE NOI DUE ❤️
-        </div>
-
         <h1>
             OGGI MI HAI RESO<br>
             L'UOMO PIÙ FELICE<br>
@@ -458,7 +460,7 @@ body {
         </div>
 
         <div class="final-hearts">
-            ♡ 💕 ♡
+            💕
         </div>
 
     </div>
@@ -491,6 +493,7 @@ const paper = document.getElementById("paper");
 const flap = document.getElementById("flap");
 const noButton = document.getElementById("noButton");
 const yesButton = document.getElementById("yesButton");
+const buttonContainer = document.getElementById("buttonContainer");
 const successOverlay = document.getElementById("successOverlay");
 
 let started = false;
@@ -556,23 +559,74 @@ paper.addEventListener("transitionend", (event) => {
         paper.style.pointerEvents = "auto";
         paper.style.cursor = "pointer";
 
-    } else if (phase === 5) {
-
-        phase = 6;
-
-        const rect = noButton.getBoundingClientRect();
-
-        document.body.appendChild(noButton);
-
-        noButton.classList.add("runaway");
-
-        noButton.style.width = rect.width + "px";
-        noButton.style.height = rect.height + "px";
-        noButton.style.left = rect.left + "px";
-        noButton.style.top = rect.top + "px";
-
-        noIsFree = true;
     }
+else if (phase === 5) {
+
+    phase = 6;
+
+    // Dimensioni visive REALI dopo la rotazione
+    const rect = noButton.getBoundingClientRect();
+
+    // Salva lo stile visivo attuale
+    const computed = getComputedStyle(noButton);
+
+    // Placeholder invisibile
+    const placeholder = document.createElement("span");
+
+    placeholder.style.display = "inline-block";
+    placeholder.style.width = rect.width + "px";
+    placeholder.style.height = rect.height + "px";
+    placeholder.style.marginLeft = computed.marginLeft;
+    placeholder.style.verticalAlign = "middle";
+    placeholder.style.visibility = "hidden";
+
+    noButton.parentNode.insertBefore(placeholder, noButton);
+
+    // Salva lo stile originale del pulsante
+    const properties = [
+        "background",
+        "background-color",
+        "color",
+        "border",
+        "border-radius",
+        "padding",
+        "font-family",
+        "font-size",
+        "font-weight",
+        "line-height",
+        "letter-spacing",
+        "text-align",
+        "box-shadow",
+        "appearance",
+        "-webkit-appearance"
+    ];
+
+    properties.forEach(property => {
+        noButton.style.setProperty(
+            property,
+            computed.getPropertyValue(property),
+            "important"
+        );
+    });
+
+    // Stesso pulsante, senza ricrearlo
+    document.body.appendChild(noButton);
+
+    noButton.classList.add("runaway");
+
+    // Mantiene ESATTAMENTE le dimensioni visibili
+    noButton.style.width = rect.width + "px";
+    noButton.style.height = rect.height + "px";
+
+    // Mantiene la posizione
+    noButton.style.left = rect.left + "px";
+    noButton.style.top = rect.top + "px";
+
+    // Annulla la scala ereditata dalla lettera
+    noButton.style.transform = "none";
+
+    noIsFree = true;
+}
 });
 
 /* GIRARE LETTERA */
@@ -590,12 +644,12 @@ paper.addEventListener("click", (event) => {
 
 /* NO CHE SCAPPA */
 
-function teleportNo() {
+function teleportNo(event) {
 
     if (!noIsFree) return;
 
     const rect = noButton.getBoundingClientRect();
-    const margin = 15;
+    const margin = 20;
 
     const maxX = Math.max(
         margin,
@@ -607,31 +661,106 @@ function teleportNo() {
         window.innerHeight - rect.height - margin
     );
 
-    noButton.style.left =
-        margin + Math.random() * (maxX - margin) + "px";
+    /* POSIZIONE DEL SÌ */
+    const yesRect = yesButton.getBoundingClientRect();
 
-    noButton.style.top =
-        margin + Math.random() * (maxY - margin) + "px";
+    /* POSIZIONE DEL MOUSE */
+    const mouseX = event ? event.clientX : -1000;
+    const mouseY = event ? event.clientY : -1000;
+
+    /* POSIZIONI ORDINATE: BORDI E CENTRO */
+    const xPositions = [
+        margin,
+        maxX / 2,
+        maxX
+    ];
+
+    const yPositions = [
+        margin,
+        maxY / 2,
+        maxY
+    ];
+
+    const candidates = [];
+
+    for (const x of xPositions) {
+        for (const y of yPositions) {
+
+            const overlapsYes =
+                x < yesRect.right + 35 &&
+                x + rect.width > yesRect.left - 35 &&
+                y < yesRect.bottom + 35 &&
+                y + rect.height > yesRect.top - 35;
+
+            const tooCloseToMouse =
+                Math.hypot(
+                    x + rect.width / 2 - mouseX,
+                    y + rect.height / 2 - mouseY
+                ) < 130;
+
+            if (!overlapsYes && !tooCloseToMouse) {
+                candidates.push({ x, y });
+            }
+        }
+    }
+
+    if (candidates.length === 0) return;
+
+    /* SCEGLIE UNA POSIZIONE DISPONIBILE */
+    const destination =
+        candidates[Math.floor(Math.random() * candidates.length)];
+
+    noButton.style.left = destination.x + "px";
+    noButton.style.top = destination.y + "px";
 }
 
-noButton.addEventListener("pointerdown", (event) => {
+/* SCAPPA QUANDO IL MOUSE ENTRA */
+
+noButton.addEventListener("pointerenter", event => {
+    if (event.pointerType === "mouse") {
+        teleportNo(event);
+    }
+});
+
+/* SCAPPA ANCHE AL TOCCO */
+
+noButton.addEventListener("pointerdown", event => {
 
     if (!noIsFree) return;
 
     event.preventDefault();
-    teleportNo();
+    event.stopPropagation();
+
+    teleportNo(event);
 });
 
-noButton.addEventListener("click", (event) => {
+/* IMPEDISCE IL CLICK */
 
+noButton.addEventListener("click", event => {
     event.preventDefault();
     event.stopPropagation();
-    teleportNo();
 });
+
+/* RIDIMENSIONAMENTO DELLO SCHERMO */
 
 window.addEventListener("resize", () => {
 
-    if (noIsFree) teleportNo();
+    if (!noIsFree) return;
+
+    const rect = noButton.getBoundingClientRect();
+
+    const x = Math.min(
+        rect.left,
+        window.innerWidth - rect.width - 15
+    );
+
+    const y = Math.min(
+        rect.top,
+        window.innerHeight - rect.height - 15
+    );
+
+    noButton.style.left = Math.max(15, x) + "px";
+    noButton.style.top = Math.max(15, y) + "px";
 });
 
 /* RISPOSTA SI */
